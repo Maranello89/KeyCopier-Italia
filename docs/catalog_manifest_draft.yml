@@ -1,0 +1,18 @@
+# Draft only. Before submission add screenshots/ss0.png and replace commit_sha with the final source commit.
+# Official catalog destination: applications/Tools/key_copier_italia/manifest.yml
+sourcecode:
+  type: git
+  location:
+    origin: https://github.com/Maranello89/KeyCopier-Italia.git
+    commit_sha: 2dbc75010ab3db516e407860e8e8880cd1dc4660
+short_description: Experimental Italian CISA key profiles for KeyCopier
+name: KeyCopier Italia
+id: key_copier_italia
+category: Tools
+version: "1.0"
+author: Maranello89
+icon: icon.png
+description: "@docs/catalog_description.md"
+changelog: "@docs/catalog_changelog.md"
+screenshots:
+  - screenshots/ss0.png
