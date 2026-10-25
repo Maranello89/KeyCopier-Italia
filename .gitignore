@@ -52,3 +52,7 @@ Mkfile.old
 dkms.conf
 
 .DS_Store
+# Generated / local build artifacts
+dist/
+.vscode/compile_commands.json
+.ufbt/

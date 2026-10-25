@@ -1,24 +1,40 @@
-# Key Copier App
-A Flipper Zero app for measuring key bitting patterns.
+# KeyCopier Italia (experimental fork)
 
-## Installation
-The best way to install the latest build would be download it from Flipper Zero's Official App Store:
-https://lab.flipper.net/apps/key_copier
+An experimental adaptation of [KeyCopier by zinongli](https://github.com/zinongli/KeyCopier) for Flipper Zero, adding three **CISA-style** profiles (3, 4, and 5 positions) with a dedicated pointed-V display and finer 1–15 on-screen depth levels.
 
-## Instruction
-To measure your key: 
-1. Place it on top of the screen.
-2. Use the contour to align your key.
-3. Adjust each pin's depth until they match. It's easier if you look with one eye closed.
+**Status:** User-tested prototype; CISA dimensions, depths, angle, and MACS constraints have **not** been independently validated against manufacturer specifications. The 1–15 depth scale is a graphical experimental subdivision, **not** an official CISA key code. Do not rely on it to manufacture functional keys or determine access authorization. Use only with keys and locks you own or have authorization to work with.
 
-## Special Thanks
-- Thank [@jamisonderek](https://github.com/jamisonderek) for his [Flipper Zero Tutorial repository](https://github.com/jamisonderek/flipper-zero-tutorials) and [YouTube channel](https://github.com/jamisonderek/flipper-zero-tutorials#:~:text=YouTube%3A%20%40MrDerekJamison)! This app is built with his Skeleton App and GPIO Wiegand app as references. 
-- Thank [@HonestLocksmith](https://github.com/HonestLocksmith) for PR #13 and #20. TONS of new key formats and supports for DOUBLE-SIDED keys are added. We have car keys now!
-- Thank [@Offreds](https://github.com/Offreds) for PR #32. We now have a more streamlined workflow for key format selection. 
-- Thank [@lightos](https://github.com/lightos) for PR #36. Weiser WR3 key format was added.
-- Thank [@RIcePatrol](https://github.com/RIcePatrol) for PR #37. Suzuki SUZ18 key format was added.
-- Hey! We are on [Adam Savage's show](https://youtu.be/c8q2YVRiOAE?t=485)! Thanks for featuring my app! 
-- We also made it to @TalkingSasquach's YouTube! He's made an awesome walkthrough from decoding the key bitting to 3D-printing copies. [Check it out!](https://www.youtube.com/watch?v=P3-KhSJE1as)
+## What's different from upstream?
 
+- CISA-style 3, 4, and 5-position experimental formats.
+- Dedicated continuous pointed-V drawing routine.
+- Nominal V display angle: 110 degrees (visual calibration, not certified tooling geometry).
+- Finer 1–15 depth adjustments for these experimental formats.
+- Existing selection, Measure, Save, and Load workflow retained **without changes**.
 
+## Build and launch
 
+Install a compatible Flipper Zero development environment and `ufbt`; connect the device, open the directory containing `application.fam`, and run:
+
+```sh
+ufbt launch
+```
+
+The FAP must be rebuilt for the target firmware/SDK. No precompiled `.fap` is included in this source archive.
+
+## Usage
+
+1. Choose the key manufacturer and profile.
+2. Open **Measure** to align the physical key with the on-screen outline and adjust the displayed positions.
+3. Save the measurement using the app's **Save** function.
+4. Use **Load** to reopen a saved measurement.
+
+## Credits and license
+
+Based on **KeyCopier**, created by [zinongli](https://github.com/zinongli/KeyCopier), with contributions from the upstream community. See the upstream repository for original acknowledgements and history. This fork is independent and is **not** an official CISA or Flipper Devices app.
+
+The original MIT license and copyright notice are preserved in [LICENSE](LICENSE).
+
+## Nota in italiano
+
+Questa e una variante *sperimentale* di KeyCopier con tre profili CISA (3, 4 e 5 posizioni), gola a V grafica di 110 gradi e scala di regolazione 1–15. Quote e livelli non sono certificati dal produttore. Il codice delle funzioni Save/Load e stato lasciato invariato rispetto all'archivio di lavoro testato sul dispositivo.
