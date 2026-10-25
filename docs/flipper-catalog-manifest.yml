@@ -1,0 +1,18 @@
+# Copy this file to flipperdevices/flipper-application-catalog at
+# applications/Tools/key_copier_italia/manifest.yml
+sourcecode:
+  type: git
+  location:
+    origin: https://github.com/Maranello89/KeyCopier-Italia.git
+    commit_sha: b73e49e6d472f9589a49b548c655f4097cddeb78
+name: KeyCopier Italia
+id: key_copier_italia
+category: Tools
+version: "1.0"
+short_description: Experimental CISA-style key profiles for KeyCopier
+description: "@docs/catalog_description.md"
+changelog: "@docs/catalog_changelog.md"
+screenshots:
+  - screenshots/Screenshot-20261025-150452.png
+  - screenshots/Screenshot-20261025-150432.png
+  - screenshots/Screenshot-20261025-150401.png
