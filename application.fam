@@ -1,6 +1,6 @@
 App(
-    appid="key_copier",
-    name="Key Copier Italia",
+    appid="key_copier_italia",
+    name="KeyCopier Italia",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="main_key_copier_app",
     stack_size=4 * 1024,
@@ -13,5 +13,5 @@ App(
     fap_icon_assets="assets",
     fap_description="@README.md",
     fap_version="1.0",
-    fap_author="Torron"
+    fap_author="Maranello89 (based on KeyCopier by Torron)"
 )
