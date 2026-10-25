@@ -740,7 +740,7 @@ static KeyCopierApp* key_copier_app_alloc() {
     app->dialogs = furi_record_open(RECORD_DIALOGS);
     app->file_path = furi_string_alloc();
     app->submenu = submenu_alloc();
-    submenu_set_header(app->submenu, "Key Copier v1.5");
+    submenu_set_header(app->submenu, "Key Copier italia v1.0");
     submenu_add_item(
         app->submenu,
         "Select Key Format",
