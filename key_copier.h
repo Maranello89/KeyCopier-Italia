@@ -1,4 +1,4 @@
-#include "key_copier_icons.h"
+#include "key_copier_italia_icons.h"
 #include "key_formats.h"
 #include <applications/services/dialogs/dialogs.h>
 #include <applications/services/storage/storage.h>
