@@ -1,5 +1,5 @@
 App(
-    appid="key_copier",
+    appid="key_copier_italia",
     name="Key Copier Italia",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="main_key_copier_app",
@@ -13,5 +13,5 @@ App(
     fap_icon_assets="assets",
     fap_description="@README.md",
     fap_version="1.0",
-    fap_author="Torron"
+    fap_author="Maranello89"
 )
