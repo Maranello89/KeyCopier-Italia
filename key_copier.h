@@ -54,6 +54,7 @@ typedef struct {
     VariableItemList* variable_item_list_config;
     View* view_measure;
     View* view_config_e;
+    View* view_buffer;
     View* view_save;
     View* view_load;
     Widget* widget_about;
