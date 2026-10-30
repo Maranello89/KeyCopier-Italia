@@ -131,11 +131,11 @@ static void key_copier_file_saver(void* context) {
     storage_simply_mkdir(storage, STORAGE_APP_DATA_PATH_PREFIX);
     FURI_LOG_D(TAG, "mkdir finished");
     FlipperFormat* flipper_format = flipper_format_file_alloc(storage);
+    FuriString* buffer = furi_string_alloc();
     do {
         const uint32_t version = 1;
         const uint32_t pin_num_buffer = (uint32_t)model->format.pin_num;
         const uint32_t macs_buffer = (uint32_t)model->format.macs;
-        FuriString* buffer = furi_string_alloc();
         if(!flipper_format_file_open_always(flipper_format, furi_string_get_cstr(file_path)))
             break;
         if(!flipper_format_write_header_cstr(flipper_format, "Flipper Key Copier File", version))
@@ -162,10 +162,12 @@ static void key_copier_file_saver(void* context) {
             }
         }
         if(!flipper_format_write_string(flipper_format, "Bitting Pattern", buffer)) break;
-        furi_string_free(buffer);
         // signal that the file was written successfully
     } while(0);
     flipper_format_free(flipper_format);
+    furi_string_free(buffer);
+    furi_record_close(RECORD_STORAGE);
+    furi_string_free(file_path);
 
     view_dispatcher_switch_to_view(app->view_dispatcher, KeyCopierViewSubmenu);
 }
@@ -216,12 +218,12 @@ static void key_copier_view_load_callback(void* context) {
     furi_string_set(app->file_path, browser_options.base_path);
     if(dialog_file_browser_show(app->dialogs, app->file_path, app->file_path, &browser_options)) {
         FlipperFormat* flipper_format = flipper_format_file_alloc(storage);
+        FuriString* format_buffer = furi_string_alloc();
+        FuriString* depth_buffer = furi_string_alloc();
         do {
             if(!flipper_format_file_open_existing(
                    flipper_format, furi_string_get_cstr(app->file_path)))
                 break;
-            FuriString* format_buffer = furi_string_alloc();
-            FuriString* depth_buffer = furi_string_alloc();
             if(!flipper_format_read_string(flipper_format, "Format Name", format_buffer)) break;
             if(!flipper_format_read_string(flipper_format, "Bitting Pattern", depth_buffer)) break;
             for(size_t i = 0; i < COUNT_OF(all_formats); i++) {
@@ -253,8 +255,10 @@ static void key_copier_view_load_callback(void* context) {
             // signal that the file was read successfully
         } while(0);
         flipper_format_free(flipper_format);
-        furi_record_close(RECORD_STORAGE);
+        furi_string_free(format_buffer);
+        furi_string_free(depth_buffer);
     }
+    furi_record_close(RECORD_STORAGE);
     view_dispatcher_switch_to_view(app->view_dispatcher, KeyCopierViewSubmenu);
 }
 
@@ -740,7 +744,7 @@ static KeyCopierApp* key_copier_app_alloc() {
     app->dialogs = furi_record_open(RECORD_DIALOGS);
     app->file_path = furi_string_alloc();
     app->submenu = submenu_alloc();
-    submenu_set_header(app->submenu, "Key Copier italia v1.0");
+    submenu_set_header(app->submenu, "Key Copier v1.5");
     submenu_add_item(
         app->submenu,
         "Select Key Format",
@@ -792,8 +796,8 @@ static KeyCopierApp* key_copier_app_alloc() {
     view_set_enter_callback(app->view_config_e, key_copier_config_enter_callback);
     view_dispatcher_add_view(app->view_dispatcher, KeyCopierViewConfigure_e, app->view_config_e);
 
-    View* view_buffer = view_alloc();
-    view_dispatcher_add_view(app->view_dispatcher, KeyCopierViewConfigure_i, view_buffer);
+    app->view_buffer = view_alloc();
+    view_dispatcher_add_view(app->view_dispatcher, KeyCopierViewConfigure_i, app->view_buffer);
 
     app->view_save = view_alloc();
     view_set_context(app->view_save, app);
@@ -814,7 +818,7 @@ static KeyCopierApp* key_copier_app_alloc() {
         0,
         128,
         64,
-        "Key Copier Italia 1.0\nAuthor: @Maranello89\n\nTo measure your key:\n\n1. Place "
+        "Key Maker App 1.5\nAuthor: @Torron\n\nTo measure your key:\n\n1. Place "
         "it on top of the screen.\n\n2. Use the contour to align your key.\n\n3. "
         "Adjust each pin's depth until they match. It's easier if you look with "
         "one eye closed.\n\nGithub: github.com/zinongli/KeyCopier \n\nSpecial "
@@ -887,13 +891,20 @@ static void key_copier_app_free(KeyCopierApp* app) {
             if(model->depth != NULL) {
                 free(model->depth);
             }
+            if(model->key_name_str != NULL) {
+                furi_string_free(model->key_name_str);
+            }
         },
         false);
     view_free(app->view_measure);
     view_dispatcher_remove_view(app->view_dispatcher, KeyCopierViewConfigure_e);
+    view_free(app->view_config_e);
     view_dispatcher_remove_view(app->view_dispatcher, KeyCopierViewConfigure_i);
+    view_free(app->view_buffer);
     view_dispatcher_remove_view(app->view_dispatcher, KeyCopierViewSave);
+    view_free(app->view_save);
     view_dispatcher_remove_view(app->view_dispatcher, KeyCopierViewLoad);
+    view_free(app->view_load);
     variable_item_list_free(app->variable_item_list_config);
     view_dispatcher_remove_view(app->view_dispatcher, KeyCopierViewSubmenu);
     submenu_free(app->submenu);
@@ -903,6 +914,8 @@ static void key_copier_app_free(KeyCopierApp* app) {
     submenu_free(app->format_list);
     view_dispatcher_free(app->view_dispatcher);
     furi_record_close(RECORD_GUI);
+    furi_string_free(app->file_path);
+    furi_record_close(RECORD_DIALOGS);
 
     free(app);
 }
